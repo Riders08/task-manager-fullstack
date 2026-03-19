@@ -1,0 +1,141 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Times New Roman', Times, serif;
+    box-sizing: border-box;
+}
+
+.container{
+    width: 100%;
+    height: 100vh;
+
+    justify-content: center;
+    align-items: center;
+
+    background: rgb(31, 31, 31);
+    position: relative;
+    z-index: 1;
+}
+
+.container:before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #FF0000,#FF7300,#FFFB00,#48FF00,
+                                        #00FFD5,#002BFF, #FF00C8, #FF0000);
+    background-size: 500% 500%;
+    z-index: -2;
+    animation: background 20s infinite;
+}
+
+@keyframes background {
+    0%{
+        background-position: 0 0;
+    }
+    50%{
+        background-position: 100% 0;
+    }
+    100%{
+        background-position: 0 0;
+    }   
+}
+
+.title_temporary{
+    text-align: center;
+    font-size: 40px;
+    font-weight: 600;
+    padding: 20px;
+    padding-top: 30px;
+}
+
+.subtitle-tasks-list{
+    text-align: center;
+    font-size: 30px;
+    font-weight: 600;
+    margin: 20px;
+}
+
+.list-task{
+    justify-items: center;
+    justify-content: center;
+    display: flex;
+    margin: 15px;
+    padding: 15px;
+    border-radius: 15px;
+}
+
+.list-task ul {
+    list-style: none;
+}
+
+.task_element {
+    font-size: 24px;
+    font-weight: 600;
+    padding: 20px;
+    margin: 20px;
+    background: transparent;
+    position: relative;
+    z-index: 2;
+    color: white;
+    transition: all .4s;
+}
+
+.task_element::before {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: black;
+    z-index: -1;
+    transition: all .4s;
+}
+
+.task_element:hover::before{
+    width: 100%;
+    z-index: -1;
+    transition: all .4s;
+}
+
+.menu_barre{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+}
+
+.new_task{
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(30px);
+    height: auto;
+    width: 250px;
+    font-size: 24px;
+    padding: 15px;
+    margin: 10px;
+}
+
+.button_new_task{
+    height: auto;
+    width: 200px;
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    font-size: 24px;
+    font-weight: 600;
+    padding: 15px 0px;
+}
+
+.button_new_task:hover{
+    box-shadow: 10px 10px 10px -1px black;
+}
+
+.button_new_task:active{
+    color: white;
+    background: black;
+}
