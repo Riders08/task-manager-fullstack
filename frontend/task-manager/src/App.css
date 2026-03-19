@@ -135,7 +135,36 @@
     box-shadow: 10px 10px 10px -1px black;
 }
 
+.task_element .check_done:focus{
+    width: 100%;
+}
+
 .button_new_task:active{
     color: white;
     background: black;
+}
+
+.check_done{
+    margin: 10px;
+    width: 20px;
+    height: auto;
+}
+
+.deleteTask{
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    margin-left: 15px;
+    height: auto;
+    width: 80px;
+    padding: 5px;
+}
+
+.deleteTask:hover{
+    box-shadow: 3px 3px 10px -1px white;
+}
+
+.deleteTask:active{
+    background: black;
+    color: white;
 }

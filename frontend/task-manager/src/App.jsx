@@ -3,7 +3,7 @@ import Task from "./Task.jsx"
 import './App.css'
 
 function App() {
-  const [tasks, setTasks] = useState(["Faire apparaitre des tâches", "Transformer le map","Faire en sorte d'ajouter un bouton",]); // Liste des tâches
+  const [tasks, setTasks] = useState([{title : "Faire apparaitre des tâches", done : false}, {title: "Transformer le map", done: false},{title : "Faire en sorte d'ajouter un bouton", done: false},]); // Liste des tâches
   const [input, setInput] = useState("");
   useEffect(() =>{
     fetch("http://localhost:3000")
@@ -15,9 +15,21 @@ function App() {
     if(!input.trim()){
       return;
     }else{
-      setTasks([...tasks,input]);
+      setTasks([...tasks,{title: input, done: false}]);
       setInput("");
     }
+  }
+
+  const deleteTask = (index) => {
+    setTasks(tasks.filter((_, i) => {
+      i!== index
+    }));
+  }
+
+  const taskDo = (index) =>{
+    Actual_tasks = [...tasks];
+    Actual_tasks[index].done = true;
+    setTasks(Actual_tasks);
   }
 
   return (
@@ -28,8 +40,11 @@ function App() {
         <ul>
           {tasks.map((task,index) =>(
             <Task
-              title={task} 
-              key={index}
+              title={task.title} 
+              index={index}
+              done={task.done}
+              toggleDone={taskDo}
+              deleteTask={deleteTask}
             />
           ))}
         </ul>
