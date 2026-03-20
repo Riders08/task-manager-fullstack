@@ -5,6 +5,7 @@ import './App.css'
 function App() {
   const [tasks, setTasks] = useState([{title : "Faire apparaitre des tâches", done : false}, {title: "Transformer le map", done: false},{title : "Faire en sorte d'ajouter un bouton", done: false},]); // Liste des tâches
   const [input, setInput] = useState("");
+  const [filtered, setFiltered] = useState("all");
   useEffect(() =>{
     fetch("http://localhost:3000")
     .then(res => res.text())
@@ -32,15 +33,21 @@ function App() {
     setTasks(Actual_tasks);
   }
 
+  const filteredTask = tasks.filter((task) =>{
+    if(filtered === "all")  return true
+    if(filtered === "done") return task.done
+    if(filtered === "todo") return !task.done
+  })
+
   return (
     <div className="container">
       <h1 className="title_temporary">Frontend Running</h1>
       <h2 className="subtitle-tasks-list">Liste des tâches</h2>
       <div className="list-task">
         <ul>
-          {tasks.map((task,index) =>(
+          {filteredTask.map((task, index) =>(
             <Task
-              title={task.title} 
+              title={task.title}
               index={index}
               done={task.done}
               toggleDone={taskDo}
@@ -52,6 +59,11 @@ function App() {
       <div className="menu_barre">
         <input type="text" className="new_task" value={input} onChange={(e) => setInput(e.target.value)} />
         <button className="button_new_task" type="button" onClick={addTask}> Ajouter </button>
+      </div>
+      <div className="menu_barre_filter">
+        <button className={filtered === "all" ? "all filter" : "filter"} onClick={() => setFiltered("all")}> Toutes les tâches </button>
+        <button className={filtered === "done" ? "done filter" : "filter"} onClick={() => setFiltered("done")}> Tâches finies </button>
+        <button className={filtered === "todo" ? "todo filter" : "filter"} onClick={() => setFiltered("todo")}> Tâches non finies </button>
       </div>
     </div>
   )

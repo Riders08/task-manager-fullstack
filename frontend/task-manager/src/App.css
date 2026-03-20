@@ -101,7 +101,7 @@
     transition: all .4s;
 }
 
-.menu_barre{
+.menu_barre, .menu_barre_filter{
     display: flex;
     justify-content:center;
     align-items: center;
@@ -163,6 +163,25 @@
 }
 
 .deleteTask:active{
+    background: black;
+    color: white;
+}
+
+.filter{
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    padding: 10px 15px;
+    margin: 10px 15px;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.filter:hover{
+    box-shadow: 0 0 10px black;
+}
+
+.all, .done, .todo {
     background: black;
     color: white;
 }
