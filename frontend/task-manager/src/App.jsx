@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react'
+
 import Task from "./Task.jsx"
+import CompteurTask from './CompteurTask.jsx';
+import FilterBarreMenu from './FilterBarreMenu.jsx';
+import AddTask from './AddTask.jsx';
+
 import './App.css'
 
 function App() {
@@ -39,12 +44,10 @@ function App() {
     if(filtered === "todo") return !task.done
   })
 
-  const cpt = tasks.filter(task => !task.done).length;
-
   return (
     <div className="container">
       <h1 className="title_temporary">Frontend Running</h1>
-      <h2 className="subtitle-tasks-list">Liste des tâches (Tâches restantes : <span>{cpt}</span>)</h2>
+      <h2 className="subtitle-tasks-list">Liste des tâches (Tâches restantes : <span><CompteurTask listTasks={tasks}/></span>)</h2>
       <div className="list-task">
         <ul>
           {filteredTask.map(task =>(
@@ -58,15 +61,8 @@ function App() {
           ))}
         </ul>
       </div>
-      <div className="menu_barre">
-        <input type="text" className="new_task" value={input} onChange={(e) => setInput(e.target.value)} />
-        <button className="button_new_task" type="button" onClick={addTask}> Ajouter </button>
-      </div>
-      <div className="menu_barre_filter">
-        <button className={filtered === "all" ? "all filter" : "filter"} onClick={() => setFiltered("all")}> Toutes les tâches </button>
-        <button className={filtered === "done" ? "done filter" : "filter"} onClick={() => setFiltered("done")}> Tâches finies </button>
-        <button className={filtered === "todo" ? "todo filter" : "filter"} onClick={() => setFiltered("todo")}> Tâches non finies </button>
-      </div>
+      <AddTask input={input} setInput={setInput} addTask={addTask}/>
+      <FilterBarreMenu filtered={filtered} setFiltered={setFiltered}/>
     </div>
   )
 
