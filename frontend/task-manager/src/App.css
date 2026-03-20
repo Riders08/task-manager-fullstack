@@ -135,19 +135,17 @@
     box-shadow: 10px 10px 10px -1px black;
 }
 
-.task_element .check_done:focus{
-    width: 100%;
-}
-
 .button_new_task:active{
     color: white;
     background: black;
 }
 
 .check_done{
-    margin: 10px;
-    width: 20px;
-    height: auto;
+    margin:10px;
+}
+
+.task_element.task_done::before{
+    width: 100%;
 }
 
 .deleteTask{

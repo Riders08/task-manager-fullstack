@@ -1,9 +1,9 @@
-function Task({title, index, done, taskDo, deleteTask}){
+function Task({title, index, done, toggleDone, deleteTask}){
     return(
-        <li className="task_element">
-            <input type="checkbox" className="check_done" onClick={taskDo}/>
+        <li className={done === true ? "task_element task_done" : "task_element"}>
+            <input type="checkbox" checked={done} className="check_done" onChange={() => toggleDone(index)}/>
             {title}
-            <button type="button" className="deleteTask" onClick={deleteTask}> Supprimer</button>
+            <button type="button" className="deleteTask" onClick={() => deleteTask(index)}> Supprimer</button>
         </li>
     )
 }

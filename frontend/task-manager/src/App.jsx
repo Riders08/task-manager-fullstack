@@ -21,14 +21,14 @@ function App() {
   }
 
   const deleteTask = (index) => {
-    setTasks(tasks.filter((_, i) => {
+    setTasks(tasks.filter((_, i) => 
       i!== index
-    }));
+    ));
   }
 
   const taskDo = (index) =>{
-    Actual_tasks = [...tasks];
-    Actual_tasks[index].done = true;
+    const Actual_tasks = [...tasks];
+    Actual_tasks[index].done = !Actual_tasks[index].done;
     setTasks(Actual_tasks);
   }
 
