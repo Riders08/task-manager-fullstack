@@ -3,7 +3,7 @@ import Task from "./Task.jsx"
 import './App.css'
 
 function App() {
-  const [tasks, setTasks] = useState([{title : "Faire apparaitre des tâches", done : false}, {title: "Transformer le map", done: false},{title : "Faire en sorte d'ajouter un bouton", done: false},]); // Liste des tâches
+  const [tasks, setTasks] = useState([{id: 0, title : "Faire apparaitre des tâches", done : false}, {id: 1, title: "Transformer le map", done: false},{id: 2, title : "Faire en sorte d'ajouter un bouton", done: false},]); // Liste des tâches
   const [input, setInput] = useState("");
   const [filtered, setFiltered] = useState("all");
   useEffect(() =>{
@@ -16,21 +16,21 @@ function App() {
     if(!input.trim()){
       return;
     }else{
-      setTasks([...tasks,{title: input, done: false}]);
+      setTasks([...tasks,{id: Date.now(), title: input, done: false}]);/*evite le doublon  a  la suppression temporaire*/
       setInput("");
     }
   }
 
-  const deleteTask = (index) => {
-    setTasks(tasks.filter((_, i) => 
-      i!== index
+  const deleteTask = (id) => {
+    setTasks(tasks.filter(task => 
+      task.id !== id
     ));
   }
 
-  const taskDo = (index) =>{
-    const Actual_tasks = [...tasks];
-    Actual_tasks[index].done = !Actual_tasks[index].done;
-    setTasks(Actual_tasks);
+  const taskDo = (id) =>{
+    setTasks(tasks.map(task =>
+      task.id === id ? {...task, done : !task.done} : task
+    ));
   }
 
   const filteredTask = tasks.filter((task) =>{
@@ -39,16 +39,18 @@ function App() {
     if(filtered === "todo") return !task.done
   })
 
+  const cpt = tasks.filter(task => !task.done).length;
+
   return (
     <div className="container">
       <h1 className="title_temporary">Frontend Running</h1>
-      <h2 className="subtitle-tasks-list">Liste des tâches</h2>
+      <h2 className="subtitle-tasks-list">Liste des tâches (Tâches restantes : <span>{cpt}</span>)</h2>
       <div className="list-task">
         <ul>
-          {filteredTask.map((task, index) =>(
+          {filteredTask.map(task =>(
             <Task
               title={task.title}
-              index={index}
+              id={task.id}
               done={task.done}
               toggleDone={taskDo}
               deleteTask={deleteTask}
