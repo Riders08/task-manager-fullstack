@@ -8,34 +8,69 @@ import AddTask from './AddTask.jsx';
 import './App.css'
 
 function App() {
-  const [tasks, setTasks] = useState([{id: 0, title : "Faire apparaitre des tâches", done : false}, {id: 1, title: "Transformer le map", done: false},{id: 2, title : "Faire en sorte d'ajouter un bouton", done: false},]); // Liste des tâches
+  const [tasks, setTasks] = useState([]); // Liste des tâches
   const [input, setInput] = useState("");
   const [filtered, setFiltered] = useState("all");
   useEffect(() =>{
-    fetch("http://localhost:3000")
-    .then(res => res.text())
-    .then(data => console.log(data))
+    fetch("http://localhost:3000/tasks")
+    .then(res => res.json())
+    .then(data => {
+      setTasks(data);
+    });
   }, []);
 
   const addTask = () => {
     if(!input.trim()){
       return;
     }else{
-      setTasks([...tasks,{id: Date.now(), title: input, done: false}]);/*evite le doublon  a  la suppression temporaire*/
-      setInput("");
+      fetch("http://localhost:3000/tasks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({title: input})
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        setTasks([...tasks, data]);
+        setInput("");
+      })
     }
   }
 
   const deleteTask = (id) => {
-    setTasks(tasks.filter(task => 
-      task.id !== id
-    ));
+    fetch(`http://localhost:3000/tasks/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    })
+    .then(res => res.text())
+    .then(data => {
+      console.log(data);
+      setTasks(tasks.filter(task => 
+        task.id !== id
+      ));
+    })
   }
 
   const taskDo = (id) =>{
-    setTasks(tasks.map(task =>
-      task.id === id ? {...task, done : !task.done} : task
-    ));
+    fetch(`http://localhost:3000/tasks/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    })
+    .then(res => res.text())
+    .then(data => {
+      console.log(data);
+      
+      setTasks(tasks.map(task =>
+        task.id === id ? {...task, done : !task.done} : task
+      ));
+    })
+    
   }
 
   const filteredTask = tasks.filter((task) =>{
