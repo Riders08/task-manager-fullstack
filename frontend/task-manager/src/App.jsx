@@ -70,8 +70,25 @@ function App() {
         task.id === id ? {...task, done : !task.done} : task
       ));
     })
-    
   }
+
+  /*const taskModification = (id) =>{
+    fetch(`http://localhost:3000/tasks/${id}`,{
+      method: "PATCH",
+      headers:{
+        "Content-Type": "application/json"
+      },
+    })
+    .then(res => res.json())
+    .then(data =>{
+      console.log(data);
+      setTasks(
+        tasks.map(task => 
+          task.id === id ? {...task, title : data} : task
+        )
+      );
+    })
+  }*/
 
   const filteredTask = tasks.filter((task) =>{
     if(filtered === "all")  return true
@@ -91,6 +108,7 @@ function App() {
               id={task.id}
               done={task.done}
               toggleDone={taskDo}
+              //modifTask={taskModification}
               deleteTask={deleteTask}
             />
           ))}
