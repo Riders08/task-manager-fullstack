@@ -17,16 +17,17 @@ const pool = new Pool({
     port: "5432",
 });
 
-let tasks = [
-    {id: 0, title : "Faire apparaitre des tâches", done : false}, 
-    {id: 1, title: "Transformer le map", done: false},
-    {id: 2, title : "Faire en sorte d'ajouter un bouton", done: false},
-    {id: 3, title : "Faire une liaison backend/frontend plus efficace", done: false},
-];
+let tasks = [];
 
-app.get("/tasks", (req,res) =>{
+app.get("/tasks", async (req,res) =>{
     try {
-        const request = ""
+        const request = "SELECT * FROM tasks";
+        const result = await pool.query(request);
+        result.rows.forEach(task => {
+            if(!tasks.find(t => t.id === task.id)){
+                tasks.push(task);
+            }
+        });
     } catch (error) {
         console.log(error);
         res.status("500").send("Error connection server!");
@@ -34,7 +35,17 @@ app.get("/tasks", (req,res) =>{
     res.send(tasks);
 });
 
-app.get("/tasks/:id", (req, res) =>{
+app.get("/tasks/:id", async (req, res) =>{
+    try {
+        const id = parseInt(req.params.id);
+        const request = "SELECT * FROM tasks WHERE id = $1"
+        const result = await pool.query(request, [id]);
+        res.send(result.rows[0]);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error connection server!");
+    }
+
     const id = parseInt(req.params.id);
     const task_to_find = tasks.find(task => task.id === id);
     res.send(task_to_find);
@@ -57,22 +68,38 @@ app.post("/tasks", async (req, res) => {
     
 });
 
-app.delete("/tasks/:id", (req, res) =>{
-    const id = parseInt(req.params.id);
-    tasks = tasks.filter(task => task.id !== id);
-    res.send(`La tâche : ${id} a bien été suprimée`);
+app.delete("/tasks/:id", async(req, res) =>{
+    try {
+        const id = parseInt(req.params.id);
+        const request = "DELETE FROM tasks WHERE id = $1 RETURNING *";
+        const result = await pool.query(request, [id]);
+        tasks = tasks.filter(task => task.id !== id);
+        res.send(`La tâche : ${result.rows[0].title} a bien été suprimée`);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error connection server!");
+    }
 });
 
-app.patch("/tasks/:id", (req,res) =>{
-    const id = parseInt(req.params.id);
-    const task = tasks.find(task => task.id === id);
-    console.log(id);
-    console.log(task);
-    if(task){
-        task.done = !task.done;
-        res.status(200).send("Le status de la tâche à bien été modifié.");
-    }else{
-        res.status(404).send("La tâche n'a pas été trouvée.");
+app.patch("/tasks/:id", async (req,res) =>{
+    try {
+        const id = parseInt(req.params.id);
+        const task = tasks.find(task => parseInt(task.id) === id);
+        if(task){
+            const request = "UPDATE tasks SET done = $1 WHERE id = $2 RETURNING *";
+            const result = await pool.query(request, [!task.done,id]);
+            if(result.rows[0].done){
+                res.status(200).send(`La tâche => ${result.rows[0].title} est faite.`);
+            }else{
+                res.status(200).send(`La tâche => ${result.rows[0].title} n'a pas encore été faite.`);
+            }
+        }else{
+            res.status(404).send("La tâche n'a pas été trouvé !");
+        }
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error connection server!");
     }
 })
 
