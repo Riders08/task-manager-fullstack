@@ -187,3 +187,47 @@
     background: black;
     color: white;
 }
+
+.Modification{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding: 5px 10px;
+}
+
+.title_modif{
+    font-size: 20px;
+    margin-right: 20px;
+}
+
+.modif_task{
+    border-radius: 15px;
+    font-size: 14px;
+    outline: none;
+    border: none;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(30px);
+    height: auto;
+    width: 250px;
+    padding: 10px;
+    margin: 3px 5px;
+}
+
+.button_modif_task{
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    height: auto;
+    width: 80px;
+    padding: 3px;
+    margin-left: 20px;
+}
+
+.button_modif_task:hover{
+    box-shadow: 3px 3px 10px -1px white;
+}
+
+.button_modif_task:active{
+    background: black;
+    color: white;
+}

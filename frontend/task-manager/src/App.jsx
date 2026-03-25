@@ -72,24 +72,6 @@ function App() {
     })
   }
 
-  /*const taskModification = (id) =>{
-    fetch(`http://localhost:3000/tasks/${id}`,{
-      method: "PATCH",
-      headers:{
-        "Content-Type": "application/json"
-      },
-    })
-    .then(res => res.json())
-    .then(data =>{
-      console.log(data);
-      setTasks(
-        tasks.map(task => 
-          task.id === id ? {...task, title : data} : task
-        )
-      );
-    })
-  }*/
-
   const filteredTask = tasks.filter((task) =>{
     if(filtered === "all")  return true
     if(filtered === "done") return task.done
@@ -108,14 +90,22 @@ function App() {
               id={task.id}
               done={task.done}
               toggleDone={taskDo}
-              //modifTask={taskModification}
               deleteTask={deleteTask}
+              tasks={tasks}
+              setTasks={setTasks}
             />
           ))}
         </ul>
       </div>
-      <AddTask input={input} setInput={setInput} addTask={addTask}/>
-      <FilterBarreMenu filtered={filtered} setFiltered={setFiltered}/>
+      <AddTask 
+        input={input} 
+        setInput={setInput} 
+        addTask={addTask}
+      />
+      <FilterBarreMenu 
+        filtered={filtered} 
+        setFiltered={setFiltered}
+      />
     </div>
   )
 

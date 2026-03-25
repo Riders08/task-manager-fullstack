@@ -103,6 +103,24 @@ app.patch("/tasks/:id", async (req,res) =>{
     }
 })
 
+app.patch("/tasks/:id/modif", async (req,res) =>{
+    try {
+        const id = parseInt(req.params.id);
+        const new_title = req.body.title;
+        const task = tasks.find(task => id === parseInt(task.id));
+        if(task){
+            const request = "UPDATE tasks SET title = $1 WHERE id = $2";
+            const result = await pool.query(request, [new_title, id]);
+            res.status(200).send(`La tâche numéro ${task.id} a bien été modifié.`);
+        }else{
+            res.status(404).send("La tâche n'a pas été trouvé !");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error connection server!");
+    }  
+})
+
 app.listen(port, ()=>{
     console.log("Server running on port : " + port);
 });
