@@ -126,7 +126,7 @@ app.get("/tasks/:id/deadline", async (req, res) => {
         const id = parseInt(req.params.id);
         const request = "SELECT deadline FROM tasks WHERE id = $1";
         const result = await pool.query(request ,[id]);
-        res.send(result);
+        res.send(result.rows[0]);
     } catch (error) {
         console.error(error);
         res.status(500).send("Error connection server!");
