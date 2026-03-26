@@ -121,6 +121,18 @@ app.patch("/tasks/:id/modif", async (req,res) =>{
     }  
 })
 
+app.get("/tasks/:id/deadline", async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+        const request = "SELECT deadline FROM tasks WHERE id = $1";
+        const result = await pool.query(request ,[id]);
+        res.send(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error connection server!");
+    }
+})
+
 app.listen(port, ()=>{
     console.log("Server running on port : " + port);
 });
