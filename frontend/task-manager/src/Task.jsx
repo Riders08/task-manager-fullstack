@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ModificationTask from "./ModificationTask.jsx"
 
-function Task({title, id, done, toggleDone, deleteTask, tasks, setTasks}){
+function Task({title, id, done, toggleDone, deleteTask, tasks, setTasks, deadline, addDeadline}){
     const [modification, setModification] = useState("");
     const taskModification = (id) =>{
         fetch(`http://localhost:3000/tasks/${id}/modif`,{
@@ -32,6 +32,10 @@ function Task({title, id, done, toggleDone, deleteTask, tasks, setTasks}){
               setModification={setModification}
               taskModification={taskModification}
             />
+            <div className="deadline">
+              <p className="actuel_deadline"> La tâche est a réalisé avant le : {deadline}</p>
+              <button className="addDealine" type="button" onClick={() => addDeadline(id)}> Ajouter une deadline </button>
+            </div>
         </li>
     )
 }

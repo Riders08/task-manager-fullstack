@@ -133,6 +133,25 @@ app.get("/tasks/:id/deadline", async (req, res) => {
     }
 })
 
+app.patch("/tasks/:id/deadline", async (req,res) =>{
+    try {
+        const id = parseInt(req.params.id);
+        const modification = req.body;
+        const deadline = new Date(modification.deadline);
+        const task = tasks.filter(task => parseInt(task.id) === id);
+        if(task){
+            const request = "UPDATE tasks SET deadline = $1 WHERE id = $2";
+            const result = await pool.query(request,[deadline,id]);
+            res.status(200).send(`La tâche numéro ${id} a dorénavant une deadline => ${modification.deadline}`);
+        }else{
+            res.status(404).send("La tâche n'a pas été trouvé!");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error connection server!");
+    }
+})
+
 app.listen(port, ()=>{
     console.log("Server running on port : " + port);
 });

@@ -55,6 +55,34 @@ function App() {
     })
   }
 
+  const getDeadlineTask = (id) => {
+    fetch(`http://localhost:3000/tasks/${id}/deadline`)
+    .then(res => res.json())
+    .then(data => {
+      console.log(data.deadline);
+    })
+  }
+
+  const addDeadline= (id) => {
+    fetch(`http://localhost:3000/tasks/${id}/deadline`,{
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({deadline: Date.now()})          
+    }
+    )
+    .then(res => res.json())
+    .then(data => {
+      console.log(data.deadline);
+      setTasks(
+        tasks.map(task => 
+          task.id === id ? {...task, deadline : data.deadline} : task
+        )
+      );
+    })
+  }
+
   const taskDo = (id) =>{
     fetch(`http://localhost:3000/tasks/${id}`, {
       method: "PATCH",
@@ -93,6 +121,8 @@ function App() {
               deleteTask={deleteTask}
               tasks={tasks}
               setTasks={setTasks}
+              deadline={task.deadline}
+              addDeadline={addDeadline}
             />
           ))}
         </ul>

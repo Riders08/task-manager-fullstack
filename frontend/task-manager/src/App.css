@@ -231,3 +231,10 @@
     background: black;
     color: white;
 }
+
+.actuel_deadline{
+    background: black;
+    border-radius: 15px;
+    padding: 10px;
+    color: white;
+}
