@@ -138,11 +138,11 @@ app.patch("/tasks/:id/deadline", async (req,res) =>{
         const id = parseInt(req.params.id);
         const modification = req.body;
         const deadline = new Date(modification.deadline);
-        const task = tasks.filter(task => parseInt(task.id) === id);
+        const task = tasks.find(task => parseInt(task.id) === id);
         if(task){
-            const request = "UPDATE tasks SET deadline = $1 WHERE id = $2";
+            const request = "UPDATE tasks SET deadline = $1 WHERE id = $2 RETURNING *";
             const result = await pool.query(request,[deadline,id]);
-            res.status(200).send(`La tâche numéro ${id} a dorénavant une deadline => ${modification.deadline}`);
+            res.status(200).send(result.rows[0]);
         }else{
             res.status(404).send("La tâche n'a pas été trouvé!");
         }
