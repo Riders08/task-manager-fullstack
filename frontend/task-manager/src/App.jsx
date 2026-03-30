@@ -11,6 +11,7 @@ function App() {
   const [tasks, setTasks] = useState([]); // Liste des tâches
   const [input, setInput] = useState("");
   const [filtered, setFiltered] = useState("all");
+  const [selectedDate, setSelectedDate] = useState(null);
   useEffect(() =>{
     fetch("http://localhost:3000/tasks")
     .then(res => res.json())
@@ -63,13 +64,13 @@ function App() {
     })
   }
 
-  const addDeadline= (id) => {
+  const addDeadline= (id, date) => {
     fetch(`http://localhost:3000/tasks/${id}/deadline`,{
       method: "PATCH",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({deadline: Date.now()})          
+      body: JSON.stringify({deadline: date})          
     }
     )
     .then(res => res.json())
@@ -123,6 +124,8 @@ function App() {
               setTasks={setTasks}
               deadline={task.deadline}
               addDeadline={addDeadline}
+              selectedDate = {selectedDate}
+              setSelectedDate= {setSelectedDate}
             />
           ))}
         </ul>

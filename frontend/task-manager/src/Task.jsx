@@ -1,7 +1,8 @@
 import { useState } from "react";
 import ModificationTask from "./ModificationTask.jsx"
+import DatePickerComponent from "./DatePickerComponent.jsx";
 
-function Task({title, id, done, toggleDone, deleteTask, tasks, setTasks, deadline, addDeadline}){
+function Task({title, id, done, toggleDone, deleteTask, tasks, setTasks, deadline, addDeadline, selectedDate, setSelectedDate}){
     const [modification, setModification] = useState("");
     const taskModification = (id) =>{
         fetch(`http://localhost:3000/tasks/${id}/modif`,{
@@ -33,8 +34,9 @@ function Task({title, id, done, toggleDone, deleteTask, tasks, setTasks, deadlin
               taskModification={taskModification}
             />
             <div className="deadline">
+              <DatePickerComponent onChangeDate={setSelectedDate}/>
               <p className="actuel_deadline"> La tâche est a réalisé avant le : {deadline}</p>
-              <button className="addDealine" type="button" onClick={() => addDeadline(id)}> Ajouter une deadline </button>
+              <button className="addDealine" type="button" onClick={() => addDeadline(id, selectedDate)}> Ajouter une deadline </button>
             </div>
         </li>
     )
