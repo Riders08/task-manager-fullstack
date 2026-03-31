@@ -183,7 +183,7 @@
     box-shadow: 0 0 10px black;
 }
 
-.all, .done, .todo {
+.all, .done, .todo, .passed, .again_todo {
     background: black;
     color: white;
 }

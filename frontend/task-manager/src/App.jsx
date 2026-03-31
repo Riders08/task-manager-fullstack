@@ -105,6 +105,8 @@ function App() {
     if(filtered === "all")  return true
     if(filtered === "done") return task.done
     if(filtered === "todo") return !task.done
+    //if(filtered === "passed") return task.is_time
+    //if(filtered === "again_todo") return !task.is_time
   })
 
   return (
