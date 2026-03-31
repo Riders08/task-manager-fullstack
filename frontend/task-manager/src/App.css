@@ -237,4 +237,33 @@
     border-radius: 15px;
     padding: 10px;
     color: white;
+    margin: 10px;
+}
+
+.addDeadline{
+    border: none;
+    outline: none;
+    padding: 3px;
+    margin: 5px 10px;
+    font-size: 16px;
+    background: white;
+    color: black;
+    border-radius: 15px;
+}
+
+.react-datepicker__input-container input{
+    margin-left: 20px;
+    height: 20px !important;
+    width: 70px !important;
+    border-radius: 15px!important;
+    padding: 2px 5px!important;
+    border: none!important;
+    outline: none!important;
+}
+
+.addDivDeadline{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    flex-direction: row;
 }

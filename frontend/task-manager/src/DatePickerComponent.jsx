@@ -17,8 +17,8 @@ function DatePickerComponent({onChangeDate}){
     return (<ReactDatePicker
     selected={date}
     onChange={handleChange}
-    showTimeSelect
     dateFormat="Pp"
+    withPortal
     />);
 }
     

@@ -34,9 +34,18 @@ function Task({title, id, done, toggleDone, deleteTask, tasks, setTasks, deadlin
               taskModification={taskModification}
             />
             <div className="deadline">
-              <DatePickerComponent onChangeDate={setSelectedDate}/>
-              <p className="actuel_deadline"> La tâche est a réalisé avant le : {deadline}</p>
-              <button className="addDealine" type="button" onClick={() => addDeadline(id, selectedDate)}> Ajouter une deadline </button>
+              <div className="addDivDeadline">
+                <DatePickerComponent onChangeDate={setSelectedDate}/>
+                <button className="addDeadline" type="button" onClick={() => addDeadline(id, selectedDate)}> Ajouter une deadline </button>
+              </div>
+              <p className="actuel_deadline"> La tâche est a réalisé avant le : {
+                new Date(deadline).toLocaleDateString("fr-FR", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric"
+                })
+              }
+              </p>
             </div>
         </li>
     )
