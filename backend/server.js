@@ -23,11 +23,7 @@ app.get("/tasks", async (req,res) =>{
     try {
         const request = "SELECT * FROM tasks";
         const result = await pool.query(request);
-        result.rows.forEach(task => {
-            if(!tasks.find(t => t.id === task.id)){
-                tasks.push(task);
-            }
-        });
+        res.send(result.rows);
     } catch (error) {
         console.log(error);
         res.status("500").send("Error connection server!");
@@ -84,19 +80,9 @@ app.delete("/tasks/:id", async(req, res) =>{
 app.patch("/tasks/:id", async (req,res) =>{
     try {
         const id = parseInt(req.params.id);
-        const task = tasks.find(task => parseInt(task.id) === id);
-        if(task){
-            const request = "UPDATE tasks SET done = $1 WHERE id = $2 RETURNING *";
-            const result = await pool.query(request, [!task.done,id]);
-            if(result.rows[0].done){
-                res.status(200).send(`La tâche => ${result.rows[0].title} est faite.`);
-            }else{
-                res.status(200).send(`La tâche => ${result.rows[0].title} n'a pas encore été faite.`);
-            }
-        }else{
-            res.status(404).send("La tâche n'a pas été trouvé !");
-        }
-
+        const request = "UPDATE tasks SET done = NOT done WHERE id = $1 RETURNING *";
+        const result = await pool.query(request, [id]);
+        res.status(200).send(result.rows[0]);
     } catch (error) {
         console.error(error);
         res.status(500).send("Error connection server!");

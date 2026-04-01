@@ -16,7 +16,11 @@ function App() {
     fetch("http://localhost:3000/tasks")
     .then(res => res.json())
     .then(data => {
-      setTasks(data);
+      const updateTasks = data.map(task => ({
+          ...task, isLate: task.deadline && new Date(task.deadline) < Date.now(),
+        }
+      )); 
+      setTasks(updateTasks);
     });
   }, []);
 
@@ -105,8 +109,10 @@ function App() {
     if(filtered === "all")  return true
     if(filtered === "done") return task.done
     if(filtered === "todo") return !task.done
-    //if(filtered === "passed") return task.is_time
-    //if(filtered === "again_todo") return !task.is_time
+    if(filtered === "late") return task.isLate
+    if(filtered === "isTime") return !task.isLate
+    if(filtered === "late_todo") return task.isLate && !task.done
+    if(filtered === "finish") return task.isLate && task.done
   })
 
   return (
