@@ -18,6 +18,7 @@ const pool = new Pool({
 });
 
 let tasks = [];
+let users = [];
 
 app.get("/tasks", async (req,res) =>{
     try {
@@ -30,6 +31,18 @@ app.get("/tasks", async (req,res) =>{
     }
     res.send(tasks);
 });
+
+app.get("/users", async (req, res) =>{
+    try {
+        const request = "SELECT * FROM users";
+        const result = await pool.query(request);
+        res.send(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error connection server!")  
+    }
+    res.send(users);
+})
 
 app.get("/tasks/:id", async (req, res) =>{
     try {
@@ -47,6 +60,19 @@ app.get("/tasks/:id", async (req, res) =>{
     res.send(task_to_find);
 })
 
+app.get("/users/:id", async (req, res) =>{
+    try {
+        const id = parseInt(req.params.id);
+        const request = "SELECT * FROM users WHERE id = $1";
+        const result = await pool.query(request, [id]);
+        res.status(200).send(result.rows[0]);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error connection server!")
+    }
+
+})
+
 app.post("/tasks", async (req, res) => {
     try {
         let data = req.body;
@@ -61,8 +87,24 @@ app.post("/tasks", async (req, res) => {
         console.log(error);
         res.status(500).send("Error connection server!");
     }
-    
 });
+
+app.post("/users", async (req, res) =>{
+    try {
+        let new_user = req.body;
+        const username = new_user.username;
+        const email = new_user.email;
+        const password = new_user.password;
+        const request = "INSERT INTO (username, email, password) VALUES ($1 $2 $3) RETURNING *";
+        const result = await pool.query(request, [username, email, password]);
+        const user = result.rows[0];
+        users.push(user);
+        res.status(200).send(user)
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error connection server!")
+    }
+})
 
 app.delete("/tasks/:id", async(req, res) =>{
     try {
@@ -77,6 +119,19 @@ app.delete("/tasks/:id", async(req, res) =>{
     }
 });
 
+app.delete("/users/:id", async (req,res) =>{
+    try {
+        const id = parseInt(req.params.id);
+        const request = "DELETE FROM users WHERE id = $1 RETURNING *";
+        const result = await pool.query(request, [id]);
+        users = users.filter(user => user.id !== id);
+        res.status(200).send(`L'utilisateur nommé ${result.rows[0].username} a bien été supprimé`)
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error connection server!")
+    }
+})
+
 app.patch("/tasks/:id", async (req,res) =>{
     try {
         const id = parseInt(req.params.id);
@@ -86,6 +141,20 @@ app.patch("/tasks/:id", async (req,res) =>{
     } catch (error) {
         console.error(error);
         res.status(500).send("Error connection server!");
+    }
+})
+
+app.patch("/users/:id/username", async (req, res) =>{
+    try {
+        const id = parseInt(req.params.id);
+        const new_username = req.body.username; 
+        const request = "UPDATE users SET username = $1 WHERE id = $2 RETURNING *";
+        const result = await pool.query(request, [new_username,id]);
+        users = users.map(user => user.id !== id ? user.username = new_username : user);
+        res.status(200).send(`L'utilisateur : ${result.rows[0].email} a bien traité et modifié son nom d'utilisateur en ${result.rows[0].username}`);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error connection server!")
     }
 })
 
