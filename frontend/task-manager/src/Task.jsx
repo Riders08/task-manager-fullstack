@@ -38,14 +38,16 @@ function Task({title, id, done, toggleDone, deleteTask, tasks, setTasks, deadlin
                 <DatePickerComponent onChangeDate={setSelectedDate}/>
                 <button className="addDeadline" type="button" onClick={() => addDeadline(id, selectedDate)}> Ajouter une deadline </button>
               </div>
-              <p className="actuel_deadline"> La tâche est a réalisé avant le : {
-                new Date(deadline).toLocaleDateString("fr-FR", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric"
-                })
+              {deadline === null ? <p></p> :
+                <p className="actuel_deadline"> La tâche est a réalisé avant le : {
+                  new Date(deadline).toLocaleDateString("fr-FR", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                  })
+                }
+                </p>
               }
-              </p>
             </div>
         </li>
     )

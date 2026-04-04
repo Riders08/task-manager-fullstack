@@ -9,7 +9,11 @@ import './App.css'
 
 function App() {
   const [tasks, setTasks] = useState([]); // Liste des tâches
+  const [users, setUsers] = useState([]);
   const [input, setInput] = useState("");
+  const [input_username, setInputUsername] = useState("");
+  const [input_email, setInputEmail] = useState("");
+  const [input_password, setInputPassword] = useState("");
   const [filtered, setFiltered] = useState("all");
   const [selectedDate, setSelectedDate] = useState(null);
   useEffect(() =>{
@@ -21,6 +25,12 @@ function App() {
         }
       )); 
       setTasks(updateTasks);
+    });
+
+    fetch("http://localhost:3000/users")
+    .then(res => res.json())
+    .then(data => {
+      setUsers(data);
     });
   }, []);
 
@@ -44,6 +54,28 @@ function App() {
     }
   }
 
+  const addUser = () => {
+    if(!input_username.trim() || !input_email.trim() || !input_password.trim()){
+      return;
+    }else{
+      fetch("http://localhost:3000/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({username: input_username, email: input_email, password: input_password})
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        setUsers([...users, data]);
+        setInputUsername("");
+        setInputEmail("");
+        setInputPassword("");
+      })
+    }
+  }
+
   const deleteTask = (id) => {
     fetch(`http://localhost:3000/tasks/${id}`, {
       method: "DELETE",
@@ -56,6 +88,22 @@ function App() {
       console.log(data);
       setTasks(tasks.filter(task => 
         task.id !== id
+      ));
+    })
+  }
+
+  const deleteUser = (id) => {
+    fetch(`http://localhost:3000/users/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    })
+    .then(res => res.text())
+    .then(data => {
+      console.log(data);
+      setUsers(users.filter(user => 
+        user.id !== id
       ));
     })
   }
