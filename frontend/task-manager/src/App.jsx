@@ -4,6 +4,7 @@ import Task from "./Task.jsx"
 import CompteurTask from './CompteurTask.jsx';
 import FilterBarreMenu from './FilterBarreMenu.jsx';
 import AddTask from './AddTask.jsx';
+import MenuBarre from './MenuBarre.jsx';
 
 import './App.css'
 
@@ -165,6 +166,7 @@ function App() {
 
   return (
     <div className="container">
+      <MenuBarre/>
       <h1 className="title_temporary">Frontend Running</h1>
       <h2 className="subtitle-tasks-list">Liste des tâches (Tâches restantes : <span><CompteurTask listTasks={tasks}/></span>)</h2>
       <div className="list-task">
