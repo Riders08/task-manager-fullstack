@@ -29,7 +29,6 @@ app.get("/tasks", async (req,res) =>{
         console.log(error);
         res.status("500").send("Error connection server!");
     }
-    res.send(tasks);
 });
 
 app.get("/users", async (req, res) =>{
@@ -41,7 +40,6 @@ app.get("/users", async (req, res) =>{
         console.error(error);
         res.status(500).send("Error connection server!")  
     }
-    res.send(users);
 })
 
 app.get("/tasks/:id", async (req, res) =>{

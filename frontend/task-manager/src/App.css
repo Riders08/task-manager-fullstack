@@ -14,7 +14,7 @@
     align-items: center;
 
     background: rgb(31, 31, 31);
-
+    padding: 10px;
     position: relative;
     z-index: 1;
 }
@@ -266,4 +266,36 @@
     justify-content: left;
     align-items: center;
     flex-direction: row;
+}
+
+.menu{
+    margin : 0 1px;
+    padding: 10px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.element-barre{
+    font-size: 24px;
+    font-weight: 600;
+    border-radius: 25px;
+    padding: 15px;
+    margin: 0px 10px;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+
+.element-barre:hover{
+    transform: scale(1.1);
+    box-shadow: 0 0 10px black;
+}
+
+.element-barre-connection{
+    position:absolute;
+    right: 0;
 }
