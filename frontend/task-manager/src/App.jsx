@@ -9,6 +9,7 @@ import MenuBarre from './MenuBarre.jsx';
 import './App.css'
 
 function App() {
+  const ActualUser = localStorage.getItem("Admin");
   const [tasks, setTasks] = useState([]); // Liste des tâches
   const [users, setUsers] = useState([]);
   const [input, setInput] = useState("");
@@ -166,7 +167,10 @@ function App() {
 
   return (
     <div className="container">
-      <MenuBarre/>
+      <MenuBarre
+        filtered={filtered} 
+        setFiltered={setFiltered}
+      />
       <h1 className="title_temporary">Frontend Running</h1>
       <h2 className="subtitle-tasks-list">Liste des tâches (Tâches restantes : <span><CompteurTask listTasks={tasks}/></span>)</h2>
       <div className="list-task">
